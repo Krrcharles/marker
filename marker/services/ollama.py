@@ -1,7 +1,7 @@
 import base64
 import json
 from io import BytesIO
-from typing import Annotated, List
+from typing import Annotated, List, Optional
 
 import PIL
 import requests
@@ -20,6 +20,10 @@ class OllamaService(BaseService):
         str,
         "The model name to use for ollama."
     ] = "llama3.2-vision"
+    ollama_api_key: Annotated[
+        Optional[str],
+        "Optional API key for Ollama API authentication."
+    ] = None
 
     def image_to_base64(self, image: PIL.Image.Image):
         image_bytes = BytesIO()
@@ -37,6 +41,9 @@ class OllamaService(BaseService):
     ):
         url = f"{self.ollama_base_url}/api/generate"
         headers = {"Content-Type": "application/json"}
+
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
 
         schema = response_schema.model_json_schema()
         format_schema = {
