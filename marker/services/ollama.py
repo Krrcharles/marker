@@ -43,7 +43,7 @@ class OllamaService(BaseService):
         headers = {"Content-Type": "application/json"}
 
         if self.api_key:
-            headers["Authorization"] = f"Bearer {self.api_key}"
+            headers["Authorization"] = f"Bearer {self.ollama_api_key}"
 
         schema = response_schema.model_json_schema()
         format_schema = {
